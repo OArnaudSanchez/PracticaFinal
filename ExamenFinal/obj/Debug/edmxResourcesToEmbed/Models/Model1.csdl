@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Tarea_FinalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Area">
+    <Key>
+      <PropertyRef Name="idArea" />
+    </Key>
+    <Property Name="idArea" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Estado" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Visitas" Relationship="Self.fk_llaveA" FromRole="Area" ToRole="Visitas" />
+  </EntityType>
+  <EntityType Name="Persona">
+    <Key>
+      <PropertyRef Name="idPersona" />
+    </Key>
+    <Property Name="idPersona" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Visitas" Relationship="Self.fk_llaveP" FromRole="Persona" ToRole="Visitas" />
+  </EntityType>
+  <EntityType Name="Visitas">
+    <Key>
+      <PropertyRef Name="idVisitas" />
+    </Key>
+    <Property Name="idVisitas" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="HoraEntrada" Type="Time" Nullable="false" Precision="2" />
+    <Property Name="HoraSalida" Type="Time" Nullable="false" Precision="2" />
+    <Property Name="Motivo_Visita" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Persona" Type="Int32" />
+    <Property Name="Area" Type="Int32" />
+    <NavigationProperty Name="Area1" Relationship="Self.fk_llaveA" FromRole="Visitas" ToRole="Area" />
+    <NavigationProperty Name="Persona1" Relationship="Self.fk_llaveP" FromRole="Visitas" ToRole="Persona" />
+  </EntityType>
+  <Association Name="fk_llaveA">
+    <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
+    <End Role="Visitas" Type="Self.Visitas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Area">
+        <PropertyRef Name="idArea" />
+      </Principal>
+      <Dependent Role="Visitas">
+        <PropertyRef Name="Area" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_llaveP">
+    <End Role="Persona" Type="Self.Persona" Multiplicity="0..1" />
+    <End Role="Visitas" Type="Self.Visitas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Persona">
+        <PropertyRef Name="idPersona" />
+      </Principal>
+      <Dependent Role="Visitas">
+        <PropertyRef Name="Persona" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Tarea_FinalEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Area" EntityType="Self.Area" />
+    <EntitySet Name="Persona" EntityType="Self.Persona" />
+    <EntitySet Name="Visitas" EntityType="Self.Visitas" />
+    <AssociationSet Name="fk_llaveA" Association="Self.fk_llaveA">
+      <End Role="Area" EntitySet="Area" />
+      <End Role="Visitas" EntitySet="Visitas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_llaveP" Association="Self.fk_llaveP">
+      <End Role="Persona" EntitySet="Persona" />
+      <End Role="Visitas" EntitySet="Visitas" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
